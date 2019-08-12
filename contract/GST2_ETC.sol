@@ -103,19 +103,19 @@ contract GasToken2 is Rlp {
     function makeChild() internal returns (address addr) {
         assembly {
             // EVM assembler of runtime portion of child contract:
-            //     ;; Pseudocode: if (msg.sender != 0x0000000000b3f879cb30fe243b4dfee438691c04) { throw; }
+            //     ;; Pseudocode: if (msg.sender != 0x0000000000004946c0e9f43f4dee607b0ef1fa1c) { throw; }
             //     ;;             suicide(msg.sender)
-            //     PUSH15 0xb3f879cb30fe243b4dfee438691c04 ;; hardcoded address of this contract
+            //     PUSH15 0x4946c0e9f43f4dee607b0ef1fa1c ;; hardcoded address of this contract
             //     CALLER
             //     XOR
             //     PC
             //     JUMPI
             //     CALLER
             //     SELFDESTRUCT
-            // Or in binary: 6eb3f879cb30fe243b4dfee438691c043318585733ff
+            // Or in binary: 6e4946c0e9f43f4dee607b0ef1fa1c3318585733ff
             // Since the binary is so short (22 bytes), we can get away
             // with a very simple initcode:
-            //     PUSH22 0x6eb3f879cb30fe243b4dfee438691c043318585733ff
+            //     PUSH22 0x6e4946c0e9f43f4dee607b0ef1fa1c3318585733ff
             //     PUSH1 0
             //     MSTORE ;; at this point, memory locations mem[10] through
             //            ;; mem[31] contain the runtime portion of the child
@@ -124,11 +124,11 @@ contract GasToken2 is Rlp {
             //     PUSH1 22 ;; length
             //     PUSH1 10 ;; offset
             //     RETURN
-            // Or in binary: 756eb3f879cb30fe243b4dfee438691c043318585733ff6000526016600af3
+            // Or in binary: 756e4946c0e9f43f4dee607b0ef1fa1c3318585733ff6000526016600af3
             // Almost done! All we have to do is put this short (31 bytes) blob into
             // memory and call CREATE with the appropriate offsets.
             let solidity_free_mem_ptr := mload(0x40)
-            mstore(solidity_free_mem_ptr, 0x00756eb3f879cb30fe243b4dfee438691c043318585733ff6000526016600af3)
+            mstore(solidity_free_mem_ptr, 0x00756e4946c0e9f43f4dee607b0ef1fa1c3318585733ff6000526016600af3)
             addr := create(0, add(solidity_free_mem_ptr, 1), 31)
         }
     }

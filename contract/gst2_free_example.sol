@@ -20,7 +20,7 @@ contract GST2FreeExample {
 		// gas left to update s_tail, balance, etc... after we are done 
 		// with destroyChildren.
 
-		GST2 gst2 = GST2(0x0000000000b3F879cb30FE243b4Dfee438691c04);
+		GST2 gst2 = GST2(0x0000000000004946c0e9f43f4dee607b0ef1fa1c);
 
 		uint safe_num_tokens = 0;
 		uint gas = msg.gas;
@@ -56,7 +56,7 @@ contract GST2FreeExample {
 		// gas left to update s_tail, balance, etc... after we are done 
 		// with destroyChildren.
 
-		GST2 gst2 = GST2(0x0000000000b3F879cb30FE243b4Dfee438691c04);
+		GST2 gst2 = GST2(0x0000000000004946c0e9f43f4dee607b0ef1fa1c);
 		
 		uint safe_num_tokens = 0;
 		uint gas = msg.gas;

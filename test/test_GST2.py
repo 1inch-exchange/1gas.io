@@ -40,7 +40,7 @@ def deploy_solidity_contract(contract_path, contract_name,
 class TestGST2(TestGenericGasToken):
 
     # hex version of child contract binary (runtime component without initcode)
-    CHILD_CONTRACT_BIN = "6eb3f879cb30fe243b4dfee438691c043318585733ff"
+    CHILD_CONTRACT_BIN = "6e4946c0e9f43f4dee607b0ef1fa1c3318585733ff"
 
     # length in bytes of the contract deployed when minting a token
     CONTRACT_LEN = len(CHILD_CONTRACT_BIN) // 2
@@ -113,14 +113,14 @@ class TestGST2(TestGenericGasToken):
         os.chdir('contract')
 
         # Our ContractGasToken contract relies on being deployed at address
-        # 0x0000000000b3F879cb30FE243b4Dfee438691c04
+        # 0x0000000000004946c0e9f43f4dee607b0ef1fa1c
         # Through magic, we have determined that a contract created in a
         # transaction with nonce == magic_nonce sent from
         # address == magic_address will have this address.
         magic_key = 0xa7d79a51ff835c80c1f5c2c3b350b15f95550e41e379e50a10ef2ff3f6a215aa
         magic_address = 0x470F1C3217A2F408769bca5AB8a5c67A9040664A
         magic_nonce = 125
-        contract_address = 0x0000000000b3F879cb30FE243b4Dfee438691c04
+        contract_address = 0x0000000000004946c0e9f43f4dee607b0ef1fa1c
 
         computed_address = int(utils.encode_hex(utils.mk_contract_address(magic_address, magic_nonce)), 16)
         assert (computed_address == contract_address)

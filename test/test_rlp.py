@@ -114,7 +114,7 @@ class TestRLP(unittest.TestCase):
 
     def test_exhaustive2(self):
         # This is the actual address we use on the mainnet
-        address = utils.normalize_address("0x0000000000b3F879cb30FE243b4Dfee438691c04")
+        address = utils.normalize_address("0x0000000000004946c0e9f43f4dee607b0ef1fa1c")
         for nonce in chain(range(72000), range(4722366482869645213696-72000, 4722366482869645213696)):
             self.assertEqual(utils.encode_hex(utils.mk_contract_address(address, nonce)), self.c.mk_contract_address(address, nonce)[2:])
             if nonce % 1000 == 0:
