@@ -133,7 +133,7 @@ class TestGST2(TestGenericGasToken):
 
         # deploy contract and check that it has been deployed successfully
         cls.c = deploy_solidity_contract(contract_path,
-                                         'GasToken2',
+                                         'OneGasToken',
                                          cls.s,
                                          sender=magic_key)
         assert (0 < len(cls.s.head_state.get_code(contract_address)))

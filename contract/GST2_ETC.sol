@@ -1,8 +1,6 @@
-pragma solidity ^0.4.10;
+pragma solidity ^0.5.2;
 
-import "rlp.sol";
-
-contract GasToken2 is Rlp {
+contract OneGasToken {
     //////////////////////////////////////////////////////////////////////////
     // Generic ERC20
     //////////////////////////////////////////////////////////////////////////
@@ -41,7 +39,7 @@ contract GasToken2 is Rlp {
     // Spec: Send `value` amount of tokens from address `from` to address `to`
     function transferFrom(address from, address to, uint256 value) public returns (bool success) {
         address spender = msg.sender;
-        if(value <= s_allowances[from][spender] && internalTransfer(from, to, value)) {
+        if (value <= s_allowances[from][spender] && internalTransfer(from, to, value)) {
             s_allowances[from][spender] -= value;
             return true;
         } else {
@@ -75,9 +73,9 @@ contract GasToken2 is Rlp {
     // GasToken specifics
     //////////////////////////////////////////////////////////////////////////
 
-    uint8 constant public decimals = 2;
-    string constant public name = "Gastoken.io";
-    string constant public symbol = "GST2";
+    uint8 constant public decimals = 0;
+    string constant public name = "1gas.io";
+    string constant public symbol = "1GAS";
 
     // We build a queue of nonces at which child contracts are stored. s_head is
     // the nonce at the head of the queue, s_tail is the nonce behind the tail
@@ -99,49 +97,65 @@ contract GasToken2 is Rlp {
         return s_head - s_tail;
     }
 
-    // Creates a child contract that can only be destroyed by this contract.
-    function makeChild() internal returns (address addr) {
-        assembly {
-            // EVM assembler of runtime portion of child contract:
-            //     ;; Pseudocode: if (msg.sender != 0x0000000000004946c0e9f43f4dee607b0ef1fa1c) { throw; }
-            //     ;;             suicide(msg.sender)
-            //     PUSH15 0x4946c0e9f43f4dee607b0ef1fa1c ;; hardcoded address of this contract
-            //     CALLER
-            //     XOR
-            //     PC
-            //     JUMPI
-            //     CALLER
-            //     SELFDESTRUCT
-            // Or in binary: 6e4946c0e9f43f4dee607b0ef1fa1c3318585733ff
-            // Since the binary is so short (22 bytes), we can get away
-            // with a very simple initcode:
-            //     PUSH22 0x6e4946c0e9f43f4dee607b0ef1fa1c3318585733ff
-            //     PUSH1 0
-            //     MSTORE ;; at this point, memory locations mem[10] through
-            //            ;; mem[31] contain the runtime portion of the child
-            //            ;; contract. all that's left to do is to RETURN this
-            //            ;; chunk of memory.
-            //     PUSH1 22 ;; length
-            //     PUSH1 10 ;; offset
-            //     RETURN
-            // Or in binary: 756e4946c0e9f43f4dee607b0ef1fa1c3318585733ff6000526016600af3
-            // Almost done! All we have to do is put this short (31 bytes) blob into
-            // memory and call CREATE with the appropriate offsets.
-            let solidity_free_mem_ptr := mload(0x40)
-            mstore(solidity_free_mem_ptr, 0x00756e4946c0e9f43f4dee607b0ef1fa1c3318585733ff6000526016600af3)
-            addr := create(0, add(solidity_free_mem_ptr, 1), 31)
-        }
-    }
-
-    // Mints `value` new sub-tokens (e.g. cents, pennies, ...) by creating `value`
+    // Mints `value` new sub-tokens by creating `value`
     // new child contracts. The minted tokens are owned by the caller of this
     // function.
     function mint(uint256 value) public {
-        for (uint256 i = 0; i < value; i++) {
-            require(makeChild() != 0);
+
+        // EVM assembler of runtime portion of child contract:
+        //     ;; Pseudocode: if (msg.sender != 0x0000000000004946c0e9f43f4dee607b0ef1fa1c) { throw; }
+        //     ;;             suicide(msg.sender)
+        //     PUSH15 0x4946c0e9f43f4dee607b0ef1fa1c ;; hardcoded address of this contract
+        //     CALLER
+        //     XOR
+        //     PC
+        //     JUMPI
+        //     CALLER
+        //     SELFDESTRUCT
+        // Or in binary: 6e4946c0e9f43f4dee607b0ef1fa1c3318585733ff
+        // Since the binary is so short (22 bytes), we can get away
+        // with a very simple initcode:
+        //     PUSH22 0x6e4946c0e9f43f4dee607b0ef1fa1c3318585733ff
+        //     PUSH1 0
+        //     MSTORE ;; at this point, memory locations mem[10] through
+        //            ;; mem[31] contain the runtime portion of the child
+        //            ;; contract. all that's left to do is to RETURN this
+        //            ;; chunk of memory.
+        //     PUSH1 22 ;; length
+        //     PUSH1 10 ;; offset
+        //     RETURN
+        // Or in binary: 756e4946c0e9f43f4dee607b0ef1fa1c3318585733ff6000526016600af3
+        // Almost done! All we have to do is put this short (31 bytes) blob into
+        // memory and call CREATE with the appropriate offsets.
+
+        assembly {
+            mstore(0, 0x756e4946c0e9f43f4dee607b0ef1fa1c3318585733ff6000526016600af300)
+
+            for {let i := div(value, 30)} i {i := sub(i, 1)} {
+                pop(create(0, 0, 29)) pop(create(0, 0, 29))
+                pop(create(0, 0, 29)) pop(create(0, 0, 29))
+                pop(create(0, 0, 29)) pop(create(0, 0, 29))
+                pop(create(0, 0, 29)) pop(create(0, 0, 29))
+                pop(create(0, 0, 29)) pop(create(0, 0, 29))
+                pop(create(0, 0, 29)) pop(create(0, 0, 29))
+                pop(create(0, 0, 29)) pop(create(0, 0, 29))
+                pop(create(0, 0, 29)) pop(create(0, 0, 29))
+                pop(create(0, 0, 29)) pop(create(0, 0, 29))
+                pop(create(0, 0, 29)) pop(create(0, 0, 29))
+                pop(create(0, 0, 29)) pop(create(0, 0, 29))
+                pop(create(0, 0, 29)) pop(create(0, 0, 29))
+                pop(create(0, 0, 29)) pop(create(0, 0, 29))
+                pop(create(0, 0, 29)) pop(create(0, 0, 29))
+                pop(create(0, 0, 29)) pop(create(0, 0, 29))
+                pop(create(0, 0, 29)) pop(create(0, 0, 29))
+            }
+
+            for {let i := and(value, 0x1F)} i {i := sub(i, 1)} {
+                pop(create(0, 0, 29))
+            }
         }
-        s_head += value;
-        s_balances[msg.sender] += value;
+
+        _end += value;
     }
 
     // Destroys `value` child contracts and updates s_tail.
@@ -149,7 +163,7 @@ contract GasToken2 is Rlp {
         uint256 tail = s_tail;
         // tail points to slot behind the last contract in the queue
         for (uint256 i = tail + 1; i <= tail + value; i++) {
-            require(mk_contract_address(this, i).call.gas(msg.gas)());
+            require(_addressFrom(i).call(""));
         }
 
         s_tail = tail + value;
@@ -184,6 +198,55 @@ contract GasToken2 is Rlp {
         s_balances[msg.sender] = from_balance - value;
 
         return value;
+    }
+
+    function _addressFrom(uint _nonce) internal view returns (address) {
+
+        if (_nonce == 0x00) return address(uint256(keccak256(abi.encodePacked(
+                byte(0xd6),
+                byte(0x94),
+                address(this),
+                byte(0x80)
+            ))));
+
+        if (_nonce <= 0x7f) return address(uint256(keccak256(abi.encodePacked(
+                byte(0xd6),
+                byte(0x94),
+                address(this),
+                uint8(_nonce)
+            ))));
+
+        if (_nonce <= 0xff) return address(uint256(keccak256(abi.encodePacked(
+                byte(0xd7),
+                byte(0x94),
+                address(this),
+                byte(0x81),
+                uint8(_nonce)
+            ))));
+
+        if (_nonce <= 0xffff) return address(uint256(keccak256(abi.encodePacked(
+                byte(0xd8),
+                byte(0x94),
+                address(this),
+                byte(0x82),
+                uint16(_nonce)
+            ))));
+
+        if (_nonce <= 0xffffff) return address(uint256(keccak256(abi.encodePacked(
+                byte(0xd9),
+                byte(0x94),
+                address(this),
+                byte(0x83),
+                uint24(_nonce)
+            ))));
+
+        return address(uint256(keccak256(abi.encodePacked(
+                byte(0xda),
+                byte(0x94),
+                address(this),
+                byte(0x84),
+                uint32(_nonce)
+            ))));
     }
 
     // Frees `value` sub-tokens owned by address `from`. Requires that `msg.sender`

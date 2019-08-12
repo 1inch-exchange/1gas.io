@@ -1,37 +1,32 @@
-# GasToken (<https://gastoken.io>)
+# GasToken (<https://1gas.io>)
 
 GasToken is an Ethereum ERC20 smart contract that lets users tokenize gas, an internal resource used in Ethereum to pay for transactions.
 The idea is simple: store gas when gas prices are low, release it when gas prices are high and experience lower transaction fees. GasTokens can be traded like any other ERC20 token.
 
-The details on how GasToken works can be found here: <https://gastoken.io>
+The details on how GasToken works can be found here: <https://1gas.io>
 
-This repository contains the Solidity code for two GasToken variants (GST1 and GST2) and exhaustive test suites of those contracts' functionalities. The `contract/` folder contains our smart contracts, the `test/` folder contains our pyethereum.tester based test suite.
+This repository contains the Solidity code for two GasToken variants (1GAS) and exhaustive test suites of those contracts' functionalities. The `contract/` folder contains our smart contracts, the `test/` folder contains our pyethereum.tester based test suite.
 
 ## Deployments
 
 The contracts are deployed on Ethereum, Kovan (testnet), Rinkeby (testnet), Ropsten Revived (testnet), and Ethereum Classic.
 
 **Ethereum**
-+ GST1: [`0x88d60255F917e3eb94eaE199d827DAd837fac4cB`](https://etherscan.io/address/0x88d60255f917e3eb94eae199d827dad837fac4cb)
-+ GST2: [`0x0000000000004946c0e9f43f4dee607b0ef1fa1c`](https://etherscan.io/address/0x00000000004946c0e9f43f4dee607b0ef1fa1c)
++ 1GAS: [`0x0000000000004946c0e9f43f4dee607b0ef1fa1c`](https://etherscan.io/address/0x00000000004946c0e9f43f4dee607b0ef1fa1c)
 
 **Ropsten**
-+ GST1: [`0x88d60255F917e3eb94eaE199d827DAd837fac4cB`](https://ropsten.etherscan.io/address/0x88d60255f917e3eb94eae199d827dad837fac4cb)
-+ GST2: [`0x0000000000004946c0e9f43f4dee607b0ef1fa1c`](https://ropsten.etherscan.io/address/0x00000000004946c0e9f43f4dee607b0ef1fa1c)
++ 1GAS: [`0x0000000000004946c0e9f43f4dee607b0ef1fa1c`](https://ropsten.etherscan.io/address/0x00000000004946c0e9f43f4dee607b0ef1fa1c)
 
 **Rinkeby**
-+ GST1: [`0x88d60255F917e3eb94eaE199d827DAd837fac4cB`](https://rinkeby.etherscan.io/address/0x88d60255f917e3eb94eae199d827dad837fac4cb)
-+ GST2: [`0x0000000000004946c0e9f43f4dee607b0ef1fa1c`](https://rinkeby.etherscan.io/address/0x00000000004946c0e9f43f4dee607b0ef1fa1c)
++ 1GAS: [`0x0000000000004946c0e9f43f4dee607b0ef1fa1c`](https://rinkeby.etherscan.io/address/0x00000000004946c0e9f43f4dee607b0ef1fa1c)
 
 **Kovan**
-+ GST1: [`0x88d60255F917e3eb94eaE199d827DAd837fac4cB`](https://kovan.etherscan.io/address/0x88d60255f917e3eb94eae199d827dad837fac4cb)
-+ GST2: [`0x000000000000170CcC93903185bE5A2094C870Df62`](https://kovan.etherscan.io/address/0x0000000000170ccc93903185be5a2094c870df62)
++ 1GAS: [`0x0000000000004946c0e9f43f4dee607b0ef1fa1c`](https://kovan.etherscan.io/address/0x0000000000170ccc93903185be5a2094c870df62)
 
 **Ethereum Classic**
-+ GST1: [`0x88d60255F917e3eb94eaE199d827DAd837fac4cB`](http://gastracker.io/contract/0x88d60255F917e3eb94eaE199d827DAd837fac4cB)
-+ GST2: [`0x0000000000004946c0e9f43f4dee607b0ef1fa1c`](http://gastracker.io/contract/0x0000000000b3F879cb30FE243b4Dfee438691c04)
++ 1GAS: [`0x0000000000004946c0e9f43f4dee607b0ef1fa1c`](http://gastracker.io/contract/0x0000000000b3F879cb30FE243b4Dfee438691c04)
 
-The GST2 code deployed on Ethereum Classic slightly differs from that on Ethereum and the testnets. For details, check out `contract/GST2_ETC.sol`
+The 1GAS code deployed on Ethereum Classic slightly differs from that on Ethereum and the testnets. For details, check out `contract/1GAS_ETC.sol`
 
 ## Dependencies
 
@@ -46,19 +41,13 @@ to install the required dependencies.
 
 ## Run Tests
 
-To run the tests for the Storage-based GasToken (GST1), run
+To run the tests for the Contract-based GasToken (1GAS), run
 
 ```sh
-$ python -m test.test_GST1
+$ python -m test.test_1GAS
 ```
 
-To run the tests for the Contract-based GasToken (GST2), run
-
-```sh
-$ python -m test.test_GST2
-```
-
-To run tests for the RLP encoding used in GST2, run
+To run tests for the RLP encoding used in 1GAS, run
 
 ```sh
 $ python -m test.test_rlp
