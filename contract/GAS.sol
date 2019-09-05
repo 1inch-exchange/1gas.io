@@ -170,7 +170,8 @@ contract GasToken {
         }
         }
 
-        s_tail += value;
+        s_head += value;
+        s_balances[msg.sender] += value;
     }
 
     // Destroys `value` child contracts and updates s_tail.
